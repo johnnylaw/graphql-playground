@@ -1,0 +1,31 @@
+{
+  "name": "babel-graphql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon --exec babel-node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/cli": "^7.17.10",
+    "@babel/core": "^7.17.10",
+    "@babel/preset-env": "^7.17.10",
+    "body-parser": "^1.20.0",
+    "concurrently": "^7.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "express-graphql": "^0.12.0",
+    "graphql": "^16.5.0",
+    "graphql-tools": "^8.2.9",
+    "merge-graphql-schemas": "^1.7.8",
+    "mongoose": "^6.3.3",
+    "nodemon": "^2.0.16"
+  },
+  "devDependencies": {
+    "@babel/node": "^7.17.10"
+  }
+}
