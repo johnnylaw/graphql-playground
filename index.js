@@ -6,7 +6,8 @@ import cors from "cors";
 
 const app = express();
 const PORT = process.env.PORT || "4000";
-const db = "Put your database URL here.";
+const DB_PASSWORD = process.env.DB_PASSWORD
+const db = `mongodb+srv://demo:${DB_PASSWORD}@cluster0.3cqtx.mongodb.net/graphqlDemo?retryWrites=true&w=majority1;`
 
 const { buildSchema } = require('graphql');
 const schema = buildSchema(`
@@ -29,18 +30,16 @@ const rootValue = {
     }
   }
 };
-
 // Connect to MongoDB with Mongoose.
-// mongoose
-//   .connect(
-//     db,
-//     {
-//       useCreateIndex: true,
-//       useNewUrlParser: true
-//     }
-//   )
-//   .then(() => console.log("MongoDB connected"))
-//   .catch(err => console.log(err));
+mongoose
+  .connect(
+    db,
+    {
+      useNewUrlParser: true
+    }
+  )
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.log(err));
 
 app.use(
   "/graphql",
