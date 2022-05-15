@@ -10,20 +10,13 @@ export default {
       return await Article.findOne({ _id }).exec();
     },
     articles: async (parent, args, context, info) => {
-
-      const res = await Article.find({})
-        .populate()
-        .exec();
-
-      return res.map(u => ({
-        _id: u._id.toString(),
-        title: u.title,
-        body: u.body,
-        published: u.published,
-        authors: u.authors,
-        // comments: u.comments,
-        date: u.date
-      }));
+      return new Promise((resolve, reject) => {
+        Article.find({})
+          .populate()
+          .exec((err, res) => {
+            err ? reject(err) : resolve(res);
+          });
+      });
     }
   },
   Mutation: {

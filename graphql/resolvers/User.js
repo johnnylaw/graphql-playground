@@ -6,7 +6,6 @@ export default {
   User: {
     passwordChanged: (parent, args, context) => {
       const { _id } = parent;
-      console.log({ _id, value: _id.valueOf(), context })
       const { currentUserId } = context;
       if (_id.valueOf() !== currentUserId ) return 'redacted';
       return parent.passwordChanged;
