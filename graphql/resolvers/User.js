@@ -1,5 +1,6 @@
 // The User schema.
 import User from "../../models/User";
+import Article from "../../models/Article";
 
 export default {
   User: {
@@ -9,6 +10,9 @@ export default {
       const { currentUserId } = context;
       if (_id.valueOf() !== currentUserId ) return 'redacted';
       return parent.passwordChanged;
+    },
+    articles: async ({ articles }, args, context, info) => {
+      return articles.map(async(_id) => await Article.findOne({ _id }));
     },
   },
   Query: {

@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { ObjectId } from "mongodb";
 
 const Schema = mongoose.Schema;
+
 ObjectId.prototype.valueOf = function() {
   return this.toString();
 };
@@ -22,7 +23,19 @@ const userSchema = new Schema({
   passwordChanged: {
     type: String,
     required: true,
-  }
+  },
+  articles: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Article"
+    }
+  ],
+  comments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Comment"
+    }
+  ]
 });
 
 const password = userSchema.virtual('password');

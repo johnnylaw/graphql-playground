@@ -5,6 +5,7 @@ export default `
     lastName: String!
     email: String!
     passwordChanged: String!
+    articles: [Article!]!
   }
 
   input AddUserInput {
