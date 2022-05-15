@@ -7,29 +7,10 @@ import cors from "cors";
 const app = express();
 const PORT = process.env.PORT || "4000";
 const DB_PASSWORD = process.env.DB_PASSWORD
-const db = `mongodb+srv://demo:${DB_PASSWORD}@cluster0.3cqtx.mongodb.net/graphqlDemo?retryWrites=true&w=majority1;`
+const db = `mongodb+srv://demo:${DB_PASSWORD}@cluster0.3cqtx.mongodb.net/graphqlDemo?retryWrites=true`
 
-const { buildSchema } = require('graphql');
-const schema = buildSchema(`
-  type User {
-    id: ID!
-  }
-  type Query {
-    hello: String
-    viewer: User
-  }
-`);
+import schema from "./graphql";
 
-const rootValue = {
-  hello: () => {
-    return 'Hello world!';
-  },
-  viewer: () => {
-    return {
-      id: 1
-    }
-  }
-};
 // Connect to MongoDB with Mongoose.
 mongoose
   .connect(
@@ -41,15 +22,17 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.log(err));
 
+const captureLoggedInUser = (({ url }) => url.replace(/^.*logged_in_user=([a-z0-9A-Z]+).*$/, '$1'))
+
 app.use(
   "/graphql",
   cors(),
   bodyParser.json(),
-  graphqlHTTP({
+  graphqlHTTP((request) => ({
     schema,
-    rootValue,
+    context: { currentUserId: captureLoggedInUser(request) },
     graphiql: true
-  })
+  }))
 );
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
