@@ -6,6 +6,7 @@ export default `
     email: String!
     passwordChanged: String!
     articles: [Article!]!
+    comments: [Comment!]!
   }
 
   input AddUserInput {

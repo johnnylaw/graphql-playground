@@ -1,6 +1,6 @@
 import User from "../../models/User";
 import Article from "../../models/Article";
-// import Comment from "../../models/Comment";
+import Comment from "../../models/Comment";
 
 // import { transformArticle } from "../merge";
 
@@ -29,14 +29,12 @@ export default {
         authors: [currentUserId],
         date: article.date
       });
-      // let createdArticle;
       try {
         const result = await new Promise((resolve, reject) => {
           newArticle.save((err, res) => {
             err ? reject(err) : resolve(res);
           });
         });
-        // createdArticle = transformArticle(result);
         const creator = await User.findById(currentUserId);
 
         if (!creator) {
@@ -44,7 +42,7 @@ export default {
         }
         creator.articles.push(newArticle);
         await creator.save();
-        return newArticle; //createdArticle;
+        return newArticle;
       } catch (error) {
         console.log(error);
         throw error;
@@ -87,8 +85,8 @@ export default {
     authors: async ({ authors }, args, context, info) => {
       return authors.map(async(author) => await User.findById(author));
     },
-    // comments: async ({ author }, args, context, info) => {
-    //   return await Comment.find({ author });
-    // }
+    comments: async ({ _id: article }, args, context, info) => {
+      return await Comment.find({ article });
+    }
   }
 };

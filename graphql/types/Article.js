@@ -11,6 +11,7 @@ export default `
     published: Boolean!
     authors: [User!]
     date: Dates
+    comments: [Comment!]!
   }
 
   type Query {

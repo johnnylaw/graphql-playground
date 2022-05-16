@@ -1,6 +1,6 @@
-// The User schema.
 import User from "../../models/User";
 import Article from "../../models/Article";
+import Comment from "../../models/Comment";
 
 export default {
   User: {
@@ -10,8 +10,11 @@ export default {
       if (_id.valueOf() !== currentUserId ) return 'redacted';
       return parent.passwordChanged;
     },
-    articles: async ({ articles }, args, context, info) => {
-      return articles.map(async(_id) => await Article.findOne({ _id }));
+    articles: async ({ _id: author }, args, context, info) => {
+      return await Article.find({ author })
+    },
+    comments: async({ _id: author }, args, context, info) => {
+      return await Comment.find({ author });
     },
   },
   Query: {
