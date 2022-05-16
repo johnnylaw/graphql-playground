@@ -48,15 +48,6 @@ export default {
         throw error;
       }
     },
-    // updateArticle: async (parent, { _id, article }, context, info) => {
-    //   return new Promise((resolve, reject) => {
-    //     Article.findByIdAndUpdate(_id, { $set: { ...article } }, { new: true }).exec(
-    //       (err, res) => {
-    //         err ? reject(err) : resolve(res);
-    //       }
-    //     );
-    //   });
-    // },
     addAuthorToArticle: async(
       parent, { authorId: author, articleId: article }, context, info
     ) => {
@@ -76,29 +67,6 @@ export default {
       }
       return article;
     },
-    deleteArticle: async (parent, { _id }, context, info) => {
-      try {
-        // searching for creator of the article and deleting it from the list
-        const article = await Article.findById(_id);
-        const creator = await User.findById(article.author);
-        if (!creator) {
-          throw new Error("user not found.");
-        }
-        const index = creator.articles.indexOf(_id);
-        if (index > -1) {
-          creator.articles.splice(index, 1);
-        }
-        await creator.save();
-        return new Promise((resolve, reject) => {
-          Article.findByIdAndDelete(_id).exec((err, res) => {
-            err ? reject(err) : resolve(res);
-          });
-        });
-      } catch (error) {
-        console.log(error);
-        throw error;
-      }
-    }
   },
   Article: {
     authors: async ({ authors }, args, context, info) => {

@@ -33,11 +33,20 @@ export default {
       });
     },
     deleteComment: async (parent, { _id }, context, info) => {
-      return new Promise((resolve, reject) => {
-        Comment.findByIdAndDelete(_id).exec((err, res) => {
-          err ? reject(err) : resolve(res);
+      const { currentUserId } = context;
+      const comment = await Comment.findById(_id);
+      if (!comment) {
+        throw new Error("Comment not found");
+      }
+      if (currentUserId === comment.author.toString()) {
+        return new Promise((resolve, reject) => {
+          Comment.findByIdAndDelete(_id).exec((err, res) => {
+            err ? reject(err) : resolve(res);
+          });
         });
-      });
+      } else {
+        throw new Error("Not authorized")
+      }
     }
   },
   Comment: {
