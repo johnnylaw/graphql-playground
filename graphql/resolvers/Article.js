@@ -45,40 +45,40 @@ export default {
         throw error;
       }
     },
-    addAuthorToArticle: async(
-      root, { authorId: author, articleId: article }, context, info
-    ) => {
-      const { currentUserId } = context;
-      article = await Article.findById(article);
-      if (!article) {
-        throw new Error("Article not found");
-      }
-      let { authors } = article;
-      authors = authors.map(author => author.toString());
-      if (!authors.includes(currentUserId)) {
-        throw new Error("Not authorized to add author");
-      }
-      if (!authors.includes(author)) {
-        article.authors.push(author);
-        await article.save();
-      }
-      return article;
-    },
-    publishArticle: async(root, { _id }, context, info) => {
-      const { currentUserId } = context;
-      const article = await Article.findById(_id);
-      if (!article) {
-        throw new Error("Article not found");
-      }
-      let { authors } = article;
-      authors = authors.map(author => author.toString());
-      if (!authors.includes(currentUserId)) {
-        throw new Error("Not authorized to add author");
-      }
-      article.datePublished = new Date().toString();
-      await article.save();
-      return article;
-    },
+    // addAuthorToArticle: async(
+    //   root, { authorId: author, articleId: article }, context, info
+    // ) => {
+    //   const { currentUserId } = context;
+    //   article = await Article.findById(article);
+    //   if (!article) {
+    //     throw new Error("Article not found");
+    //   }
+    //   let { authors } = article;
+    //   authors = authors.map(author => author.toString());
+    //   if (!authors.includes(currentUserId)) {
+    //     throw new Error("Not authorized to add author");
+    //   }
+    //   if (!authors.includes(author)) {
+    //     article.authors.push(author);
+    //     await article.save();
+    //   }
+    //   return article;
+    // },
+    // publishArticle: async(root, { _id }, context, info) => {
+    //   const { currentUserId } = context;
+    //   const article = await Article.findById(_id);
+    //   if (!article) {
+    //     throw new Error("Article not found");
+    //   }
+    //   let { authors } = article;
+    //   authors = authors.map(author => author.toString());
+    //   if (!authors.includes(currentUserId)) {
+    //     throw new Error("Not authorized to add author");
+    //   }
+    //   article.datePublished = new Date().toString();
+    //   await article.save();
+    //   return article;
+    // },
   },
   Article: {
     authors: async ({ authors }, args, context, info) => {
