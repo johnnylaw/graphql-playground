@@ -24,6 +24,5 @@ export default `
   type Mutation {
     addUser(user: AddUserInput!): User
     editUser(_id: ID!, firstName: String, lastName: String, email: String): User
-    deleteUser(_id: ID!): User
   }
 `;

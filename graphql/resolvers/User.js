@@ -51,21 +51,18 @@ export default {
         });
       });
     },
-    editUser: (root, { id, firstName, lastName, email }) => {
+    editUser: (root, { _id, firstName, lastName, email }, context) => {
+      const { currentUserId } = context;
+      if (currentUserId !== _id) {
+        throw new Error("User not found");
+      }
       return new Promise((resolve, reject) => {
-        User.findOneAndUpdate({ id }, { $set: { firstName, lastName, email } }).exec(
+        User.findOneAndUpdate({ _id }, { $set: { firstName, lastName, email } }).exec(
           (err, res) => {
             err ? reject(err) : resolve(res);
           }
         );
       });
     },
-    deleteUser: (root, args) => {
-      return new Promise((resolve, reject) => {
-        User.findOneAndRemove(args).exec((err, res) => {
-          err ? reject(err) : resolve(res);
-        });
-      });
-    }
   }
 };
