@@ -16,7 +16,6 @@ export default `
 
   type Mutation {
     createArticle(article: CreateArticleInput): Article!
-    addAuthorToArticle(articleId: ID!, authorId: ID!): Article!
   }
 
   input CreateArticleInput {
