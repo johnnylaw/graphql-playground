@@ -1,16 +1,11 @@
 export default `
-  type Dates {
-    published: String
-    updated: String
-  }
-
   type Article {
     _id: ID!
     title: String
     body: String!
     published: Boolean!
+    datePublished: String
     authors: [User!]
-    date: Dates
     comments: [Comment!]!
   }
 

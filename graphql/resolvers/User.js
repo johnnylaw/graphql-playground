@@ -7,11 +7,17 @@ export default {
     passwordChanged: (parent, args, context) => {
       const { _id } = parent;
       const { currentUserId } = context;
-      if (_id.valueOf() !== currentUserId ) return 'redacted';
+      if (_id.valueOf() !== currentUserId ) return 'REDACTED';
       return parent.passwordChanged;
     },
-    articles: async ({ _id: author }, args, context, info) => {
-      return await Article.find({ author })
+    email: (parent, args, context) => {
+      const { _id } = parent;
+      const { currentUserId } = context;
+      if (_id.valueOf() !== currentUserId ) return 'REDACTED';
+      return parent.email;
+    },
+    articles: async ({ _id: authors }, args, context, info) => {
+      return await Article.find({ authors })
     },
     comments: async({ _id: author }, args, context, info) => {
       return await Comment.find({ author });

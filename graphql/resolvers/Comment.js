@@ -25,7 +25,6 @@ export default {
         author: currentUserId,
         article: comment.article
       });
-      console.log({ newComment })
 
       return new Promise((resolve, reject) => {
         newComment.save((err, res) => {

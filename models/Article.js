@@ -16,10 +16,6 @@ const articleSchema = new Schema({
     type: String,
     required: true
   },
-  published: {
-    type: Boolean,
-    default: true
-  },
   authors: [
     {
       type: Schema.Types.ObjectId,
@@ -32,16 +28,14 @@ const articleSchema = new Schema({
       ref: "Comment"
     }
   ],
-  date: {
-    published: {
-      type: Date,
-      default: Date.now()
-    },
-    updated: {
-      type: Date,
-      default: Date.now()
-    }
+  datePublished: {
+    type: String,
+    required: false,
   }
+});
+
+articleSchema.virtual('published').get(function() {
+  return !!this.datePublished;
 });
 
 export default mongoose.model("Article", articleSchema);

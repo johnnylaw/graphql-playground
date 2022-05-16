@@ -20,15 +20,17 @@ export default {
     }
   },
   Mutation: {
-    createArticle: async (parent, { article }, context, info) => {
+    createArticle: async (root, { article: { title, body } }, context, info) => {
       const { currentUserId } = context;
-      const newArticle = await new Article({
-        title: article.title,
-        body: article.body,
-        published: article.published,
-        authors: [currentUserId],
-        date: article.date
+      const authors = [currentUserId];
+      const datePublished = null;
+      const newArticle = new Article({
+        title,
+        body,
+        authors,
+        datePublished,
       });
+
       try {
         const result = await new Promise((resolve, reject) => {
           newArticle.save((err, res) => {
@@ -40,8 +42,6 @@ export default {
         if (!creator) {
           throw new Error("User not found.");
         }
-        creator.articles.push(newArticle);
-        await creator.save();
         return newArticle;
       } catch (error) {
         console.log(error);
@@ -57,6 +57,25 @@ export default {
     //     );
     //   });
     // },
+    addAuthorToArticle: async(
+      parent, { authorId: author, articleId: article }, context, info
+    ) => {
+      const { currentUserId } = context;
+      article = await Article.findById(article);
+      if (!article) {
+        throw new Error("Article not found");
+      }
+      let { authors } = article;
+      authors = authors.map(author => author.toString());
+      if (!authors.includes(currentUserId)) {
+        throw new Error("Not authorized to add author");
+      }
+      if (!authors.includes(author)) {
+        article.authors.push(author);
+        await article.save();
+      }
+      return article;
+    },
     deleteArticle: async (parent, { _id }, context, info) => {
       try {
         // searching for creator of the article and deleting it from the list
