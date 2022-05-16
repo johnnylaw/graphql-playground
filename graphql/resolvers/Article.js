@@ -2,22 +2,19 @@ import User from "../../models/User";
 import Article from "../../models/Article";
 import Comment from "../../models/Comment";
 
-// import { transformArticle } from "../merge";
-
 export default {
   Query: {
     article: async (parent, { _id }, context, info) => {
       return await Article.findOne({ _id }).exec();
     },
     articles: async (parent, args, context, info) => {
-      return new Promise((resolve, reject) => {
-        Article.find({})
-          .populate()
-          .exec((err, res) => {
-            err ? reject(err) : resolve(res);
-          });
+      const { currentUserId } = context;
+      const articles = await Article.find({}).populate().exec();
+      return articles.filter((article) => {
+        const authorIds = article.authors.map(author => author.toString());
+        return article.published || authorIds.includes(currentUserId);
       });
-    }
+    },
   },
   Mutation: {
     createArticle: async (root, { article: { title, body } }, context, info) => {
