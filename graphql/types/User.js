@@ -22,7 +22,7 @@ export default `
   }
 
   type Mutation {
-    addUser(input: AddUserInput!): User
+    addUser(user: AddUserInput!): User
     editUser(_id: ID!, firstName: String, lastName: String, email: String): User
     deleteUser(_id: ID!): User
   }

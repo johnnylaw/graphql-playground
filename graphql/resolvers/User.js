@@ -42,8 +42,8 @@ export default {
     }
   },
   Mutation: {
-    addUser: (root, { input: { firstName, lastName, email, password } }) => {
-      const newUser = new User({ firstName, lastName, email, password });
+    addUser: (root, { user }) => {
+      const newUser = new User(user);
 
       return new Promise((resolve, reject) => {
         newUser.save((err, res) => {
